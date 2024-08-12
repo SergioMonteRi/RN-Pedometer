@@ -1,8 +1,9 @@
 import { View } from 'react-native'
 import React, { useEffect } from 'react'
 
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, CircleProps } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 import RingProgressStyles from './styles';
 
@@ -26,10 +27,19 @@ const RingProgress = (props: RingProgressProps) => {
         strokeDasharray: [circumference * fill.value, circumference]
     }))
 
-    const styles = RingProgressStyles(radius);
+    const circleProps: CircleProps = {
+        cx: radius,
+        cy: radius,
+        r: innerRadius,
+        strokeWidth: strokeWidth,
+        stroke: "#EE0F55",
+        fill: "none",
+    }
+
+    const styles = RingProgressStyles(radius, strokeWidth);
 
     useEffect(() => {
-        fill.value = withTiming(progress, { duration: 1500});
+        fill.value = withTiming(progress, { duration: 1500 });
     }, [progress])
 
     return (
@@ -37,28 +47,19 @@ const RingProgress = (props: RingProgressProps) => {
             <Svg>
                 {/* Background */}
                 <Circle
-                    cx={radius}
-                    cy={radius}
-                    r={innerRadius}
-                    strokeWidth={strokeWidth}
-                    stroke={"#EE0F55"}
-                    fill={"none"}
+                    {...circleProps}
                     opacity={0.2}
                 />
 
                 <AnimatedCircle
+                    {...circleProps}
                     animatedProps={animatedProps}
-                    cx={radius}
-                    cy={radius}
-                    r={innerRadius}
-                    fill={"none"}
-                    strokeWidth={strokeWidth}
-                    stroke={"#EE0F55"}
                     strokeLinecap="round"
                     rotation="-90"
                     origin={`${radius}, ${radius}`}
                 />
             </Svg>
+            <AntDesign name="arrowright" size={strokeWidth * 0.8} color="black" style={styles.arrow}/>
         </View>
     )
 }
