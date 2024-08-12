@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+
 import statsDataStyles from './styles'
 
 type Props = {
@@ -11,7 +12,7 @@ const StatsData = (props: Props) => {
     const { label, value } = props;
 
     return (
-        <View style={statsDataStyles.valueContainer}>
+        <View>
             <Text style={statsDataStyles.label}>{label}</Text>
             <Text style={statsDataStyles.value}>{value}</Text>
         </View>
