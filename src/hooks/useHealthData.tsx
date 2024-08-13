@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import appleHealthKit, { HealthInputOptions, HealthKitPermissions, HealthUnit } from 'react-native-health';
 
 type useHealthDataType = {
@@ -35,13 +36,24 @@ const useHealthData = (props: useHealthDataProps): useHealthDataType => {
     const [distance, setDistance] = useState(0);
 
     useEffect(() => {
-        appleHealthKit.initHealthKit(permissions, (err) => {
-            if (err) {
-                console.log('Failed to initialize HealthKit', err);
+        if(Platform.OS !== 'ios') {
+            return
+        }
+        
+        appleHealthKit.isAvailable((error, result) => {
+            if (!result || error) {
+                console.log('HealthKit is not available');
                 return;
             }
 
-            setHasPermissions(true);
+            appleHealthKit.initHealthKit(permissions, (err) => {
+                if (err) {
+                    console.log('Failed to initialize HealthKit', err);
+                    return;
+                }
+
+                setHasPermissions(true);
+            });
         });
     }, [])
 
