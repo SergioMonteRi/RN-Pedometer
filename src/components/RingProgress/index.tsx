@@ -32,7 +32,7 @@ const RingProgress = (props: RingProgressProps) => {
         cy: radius,
         r: innerRadius,
         strokeWidth: strokeWidth,
-        stroke: "#EE0F55",
+        stroke: "#3274F0",
         fill: "none",
     }
 
