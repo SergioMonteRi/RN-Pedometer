@@ -1,18 +1,25 @@
 import { StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 // Components
 import StatsData from './src/components/StatsData';
 import RingProgress from './src/components/RingProgress';
+import useHealthData from './src/hooks/useHealthData';
+
+
 
 export default function App() {
+  const {distance, flightClimbed, progress, stepCount} = useHealthData({
+    date: new Date(),
+  });
+
   return (
     <View style={styles.container}>
-      <RingProgress progress={0.6} radius={150} strokeWidth={38}/>
-
+      <RingProgress progress={progress} radius={150} strokeWidth={38} />
       <View style={styles.statsContainer}>
-        <StatsData label='Steps' value='1000' />
-        <StatsData label='Distance' value='0,75 km' />
-        <StatsData label='flights climbed' value='5 km' />
+        <StatsData label='Steps' value={stepCount.toString()} />
+        <StatsData label='Distance' value={`${(distance / 1000).toFixed()} km`} />
+        <StatsData label='flights climbed' value={flightClimbed.toString()} />
       </View>
     </View>
   );
@@ -26,7 +33,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   statsContainer: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     gap: 25,
     flexWrap: 'wrap',
     marginTop: 40,
